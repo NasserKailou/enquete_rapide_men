@@ -410,9 +410,279 @@
             text-align: center;
             margin-top: 3rem;
         }
+
+        /* Login Button */
+        .login-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: var(--primary-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .user-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info.show {
+            display: inline-flex;
+        }
+
+        .user-info .user-name {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .user-info .user-role {
+            background: var(--light-green);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .user-info .logout-btn {
+            background: var(--orange);
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .user-info .logout-btn:hover {
+            background: #c74619;
+        }
+
+        /* Modal Login */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 90%;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(12, 159, 87, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-green));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(12, 159, 87, 0.4);
+        }
+
+        .btn-cancel {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .admin-menu-btn {
+            background: var(--orange);
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-menu-btn:hover {
+            background: #c74619;
+        }
     </style>
 </head>
 <body>
+    <!-- Login Button -->
+    <div class="login-btn" id="loginBtn" onclick="showLoginModal()">
+        <i class="fas fa-sign-in-alt"></i> Connexion
+    </div>
+
+    <!-- User Info (hidden by default) -->
+    <div class="user-info" id="userInfo">
+        <div>
+            <div class="user-name" id="userName"></div>
+            <div class="user-role" id="userRole"></div>
+        </div>
+        <a href="gestion_users.php" class="admin-menu-btn" id="adminBtn" style="display: none;">
+            <i class="fas fa-users-cog"></i> Gérer Utilisateurs
+        </a>
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </button>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-lock"></i> Authentification</h2>
+                <p>Veuillez vous connecter pour accéder aux formulaires</p>
+            </div>
+            <div class="error-message" id="errorMessage"></div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-key"></i> Mot de passe</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+                <button type="button" class="btn-cancel" onclick="closeLoginModal()">
+                    Annuler
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Header -->
     <div class="header">
         <div class="header-content">
@@ -567,14 +837,159 @@
             }, 16);
         }
 
-        // Charger les statistiques (à remplacer par un appel AJAX réel)
+        // Variables globales
+        let currentUser = null;
+        let pendingCycle = null;
+
+        // Charger les statistiques depuis l'API
+        async function loadStats() {
+            try {
+                const response = await fetch('api/stats.php');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    animateNumber(document.getElementById('total-etablissements'), data.total_etablissements);
+                    animateNumber(document.getElementById('total-eleves'), data.total_eleves);
+                    animateNumber(document.getElementById('total-enseignants'), data.total_enseignants);
+                } else {
+                    console.error('Erreur lors du chargement des statistiques');
+                    // En cas d'erreur, afficher des valeurs par défaut
+                    animateNumber(document.getElementById('total-etablissements'), 0);
+                    animateNumber(document.getElementById('total-eleves'), 0);
+                    animateNumber(document.getElementById('total-enseignants'), 0);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                // En cas d'erreur, afficher des valeurs par défaut
+                animateNumber(document.getElementById('total-etablissements'), 0);
+                animateNumber(document.getElementById('total-eleves'), 0);
+                animateNumber(document.getElementById('total-enseignants'), 0);
+            }
+        }
+
+        // Vérifier l'authentification au chargement
+        async function checkAuth() {
+            try {
+                const response = await fetch('api/auth.php?action=check');
+                const result = await response.json();
+                
+                if (result.authenticated && result.user) {
+                    currentUser = result.user;
+                    showUserInfo(result.user);
+                }
+            } catch (error) {
+                console.error('Erreur lors de la vérification de l\'authentification:', error);
+            }
+        }
+
+        // Afficher les informations de l'utilisateur
+        function showUserInfo(user) {
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('userInfo').classList.add('show');
+            document.getElementById('userName').textContent = user.nom_complet || user.username;
+            document.getElementById('userRole').textContent = user.role.toUpperCase();
+            
+            // Afficher le bouton admin si l'utilisateur est admin
+            if (user.role === 'admin') {
+                document.getElementById('adminBtn').style.display = 'inline-flex';
+            }
+        }
+
+        // Cacher les informations de l'utilisateur
+        function hideUserInfo() {
+            document.getElementById('loginBtn').style.display = 'inline-flex';
+            document.getElementById('userInfo').classList.remove('show');
+            document.getElementById('adminBtn').style.display = 'none';
+        }
+
+        // Afficher le modal de connexion
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('username').focus();
+        }
+
+        // Fermer le modal de connexion
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+            document.getElementById('loginForm').reset();
+            document.getElementById('errorMessage').classList.remove('show');
+            pendingCycle = null;
+        }
+
+        // Gérer la connexion
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            
+            try {
+                const formData = new FormData();
+                formData.append('action', 'login');
+                formData.append('username', username);
+                formData.append('password', password);
+                
+                const response = await fetch('api/auth.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentUser = result.user;
+                    showUserInfo(result.user);
+                    closeLoginModal();
+                    
+                    // Si un cycle était en attente, rediriger
+                    if (pendingCycle) {
+                        window.location.href = 'formulaire.php?cycle=' + pendingCycle;
+                    }
+                } else {
+                    errorDiv.textContent = result.error;
+                    errorDiv.classList.add('show');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Erreur de connexion. Veuillez réessayer.';
+                errorDiv.classList.add('show');
+            }
+        }
+
+        // Déconnexion
+        async function logout() {
+            try {
+                const formData = new FormData();
+                formData.append('action', 'logout');
+                
+                await fetch('api/auth.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                currentUser = null;
+                hideUserInfo();
+            } catch (error) {
+                console.error('Erreur lors de la déconnexion:', error);
+            }
+        }
+
+        // Fonction modifiée goToForm pour exiger l'authentification
+        function goToForm(cycle) {
+            if (currentUser) {
+                window.location.href = 'formulaire.php?cycle=' + cycle;
+            } else {
+                pendingCycle = cycle;
+                showLoginModal();
+            }
+        }
+
+        // Initialisation au chargement de la page
         window.addEventListener('DOMContentLoaded', () => {
-            // Simulation - À remplacer par fetch vers API
-            setTimeout(() => {
-                animateNumber(document.getElementById('total-etablissements'), 245);
-                animateNumber(document.getElementById('total-eleves'), 12847);
-                animateNumber(document.getElementById('total-enseignants'), 1563);
-            }, 500);
+            checkAuth();
+            loadStats();
         });
     </script>
 </body>

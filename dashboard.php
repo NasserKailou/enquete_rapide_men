@@ -1,6 +1,12 @@
 <?php
 require_once 'config.php';
 
+// Vérifier que l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.html');
+    exit;
+}
+
 $db = Database::getInstance()->getConnection();
 
 // Récupérer les statistiques globales

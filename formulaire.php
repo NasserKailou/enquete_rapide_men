@@ -1,6 +1,12 @@
 <?php
 require_once 'config.php';
 
+// Vérifier que l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.html');
+    exit;
+}
+
 $cycle = isset($_GET['cycle']) ? securise($_GET['cycle']) : '';
 $allowed_cycles = ['prescolaire', 'primaire', 'secondaire'];
 
