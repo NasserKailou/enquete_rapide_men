@@ -750,5 +750,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             loadUsers();
         });
     </script>
+    
+    <!-- Script de gestion de l'année scolaire active -->
+    <script src="js/annee_scolaire.js"></script>
 </body>
 </html>

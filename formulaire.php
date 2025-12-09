@@ -23,7 +23,7 @@ $db = Database::getInstance()->getConnection();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire <?php echo ucfirst($cycle); ?> - Enquête Rapide 2025-2026</title>
+    <title>Formulaire <?php echo ucfirst($cycle); ?> - Enquête Rapide <?php echo $_SESSION['annee_scolaire_active']['libelle'] ?? '2025-2026'; ?></title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -44,7 +44,7 @@ $db = Database::getInstance()->getConnection();
                 </div>
                 <div class="header-titles">
                     <h1>Formulaire d'Enquête - Cycle <?php echo ucfirst($cycle); ?></h1>
-                    <p>Enquête Rapide sur la Rentrée Scolaire 2025-2026</p>
+                    <p class="annee-scolaire-display with-badge with-collecte-status">Enquête Rapide sur la Rentrée Scolaire <?php echo $_SESSION['annee_scolaire_active']['libelle'] ?? '2025-2026'; ?></p>
                 </div>
             </div>
         </div>
@@ -109,8 +109,23 @@ $db = Database::getInstance()->getConnection();
     </div>
 
     <script src="js/formulaire.js"></script>
+    <script src="js/annee_scolaire.js"></script>
     <script>
         const cycle = '<?php echo $cycle; ?>';
+        
+        // Vérifier si la collecte est ouverte au chargement
+        window.addEventListener('DOMContentLoaded', async () => {
+            const annee = await getAnneeScolaireActive();
+            if (annee && annee.collecte_ouverte == 0) {
+                // Afficher un message d'avertissement
+                showCollecteFermeeMessage();
+                
+                // Optionnel: Désactiver le formulaire
+                // document.getElementById('enqueteForm').querySelectorAll('input, select, textarea').forEach(el => {
+                //     el.disabled = true;
+                // });
+            }
+        });
     </script>
 </body>
 </html>
