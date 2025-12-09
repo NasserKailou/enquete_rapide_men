@@ -99,27 +99,434 @@ function logActivite($utilisateur_id, $action, $table_concernee = null, $id_enre
 }
 
 // Listes des régions du Niger
+
 $regions_niger = [
-    'Agadez',
-    'Diffa',
-    'Dosso',
-    'Maradi',
-    'Niamey',
-    'Tahoua',
-    'Tillabéri',
-    'Zinder'
+    "Agadez",
+    "Diffa",
+    "Dosso",
+    "Maradi",
+    "Niamey",
+    "Tahoua",
+    "Tillabery",
+    "Zinder",
 ];
 
-// Départements par région (exemple simplifié)
+// Départements par région
 $departements_par_region = [
-    'Agadez' => ['Agadez', 'Arlit', 'Bilma', 'Tchirozérine'],
-    'Diffa' => ['Diffa', 'Maïné-Soroa', 'N\'Guigmi'],
-    'Dosso' => ['Dosso', 'Boboye', 'Dogondoutchi', 'Gaya', 'Loga'],
-    'Maradi' => ['Maradi', 'Aguié', 'Dakoro', 'Guidan Roumdji', 'Madarounfa', 'Mayahi', 'Tessaoua'],
-    'Niamey' => ['Niamey I', 'Niamey II', 'Niamey III', 'Niamey IV', 'Niamey V'],
-    'Tahoua' => ['Tahoua', 'Abalak', 'Birni N\'Konni', 'Bouza', 'Illela', 'Keita', 'Madaoua', 'Malbaza', 'Tahoua', 'Tchintabaraden'],
-    'Tillabéri' => ['Tillabéri', 'Ayorou', 'Balleyara', 'Filingué', 'Kollo', 'Ouallam', 'Say', 'Téra', 'Torodi'],
-    'Zinder' => ['Zinder', 'Damagaram Takaya', 'Gouré', 'Kantché', 'Magaria', 'Mirriah', 'Tanout']
+    "Agadez" => ["Aderbisanat", "Agadez  Ville", "Arlit", "Bilma", "Iferouane", "Ingall", "Tchirozerine"],
+    "Diffa" => ["Bosso", "Diffa", "Goudoumaria", "Maine Soroa", "N'Gourti", "N'Guigmi"],
+    "Dosso" => ["Boboye", "Dioundiou", "Dogondoutchi", "Dosso", "Falmey", "Gaya", "Loga", "Tibiri"],
+    "Maradi" => ["Aguie", "Bermo", "Dakoro", "Gazaoua", "Guidan-Roumdji", "Madarounfa", "Mayahi", "Tessaoua", "Ville  De Maradi"],
+    "Niamey" => ["Niamey Ville"],
+    "Tahoua" => ["Abalak", "Bagaroua", "Birni N'Konni", "Bouza", "Illela", "Keita", "Madaoua", "Malbaza", "Tahoua Departement", "Tassara", "Tchintabaraden", "Tillia", "Ville De Tahoua"],
+    "Tillabery" => ["Abala", "Ayorou", "Balleyara", "Banibangou", "Bankilare", "Filingue", "Gotheye", "Kollo", "Ouallam", "Say", "Tera", "Tillaberi", "Torodi"],
+    "Zinder" => ["Belbedji", "Damagaram Takaya", "Dungass", "Goure", "Kantche", "Magaria", "Mirriah", "Takeita", "Tanout", "Tesker", "Ville De Zinder"],
+];
+
+// Communes par département
+$communes_par_departement = [
+    "Abala" => [
+        "Abala",
+        "Sanam",
+    ],
+    "Abalak" => [
+        "Abalak",
+        "Akoubounou",
+        "Azeye",
+        "Tabalak",
+        "Tamaya",
+    ],
+    "Aderbisanat" => [
+        "Adebissanat",
+    ],
+    "Agadez  Ville" => [
+        "Agadez  Commune",
+    ],
+    "Aguie" => [
+        "Aguie",
+        "Tchadoua",
+    ],
+    "Arlit" => [
+        "Arlit",
+        "Dannet",
+        "Gougaram",
+    ],
+    "Ayorou" => [
+        "Ayorou",
+        "Inattes",
+    ],
+    "Bagaroua" => [
+        "Bagaroua",
+    ],
+    "Balleyara" => [
+        "Tagazar",
+    ],
+    "Banibangou" => [
+        "Banibangou",
+    ],
+    "Bankilare" => [
+        "Bankilare",
+    ],
+    "Belbedji" => [
+        "Tarka",
+    ],
+    "Bermo" => [
+        "Bermo",
+        "Gadabedji",
+    ],
+    "Bilma" => [
+        "Bilma",
+        "Dirkou",
+        "Djado",
+        "Fachi",
+    ],
+    "Birni N'Konni" => [
+        "Allela",
+        "Bazaga",
+        "Birni N'Konni",
+        "Tsernaoua",
+    ],
+    "Boboye" => [
+        "Birni N'Gaoure",
+        "Fabidji",
+        "Fakara",
+        "Harika-Nassou",
+        "Kankandi",
+        "Kiota",
+        "Koygolo",
+        "N'Gonga",
+    ],
+    "Bosso" => [
+        "Bosso",
+        "Toumour",
+    ],
+    "Bouza" => [
+        "Allakeye",
+        "Baban Katami",
+        "Bouza",
+        "Deoule",
+        "Karofane",
+        "Tabotaki",
+        "Tama",
+    ],
+    "Dakoro" => [
+        "Adjiekoria",
+        "Azagor",
+        "Bader Goula",
+        "Birnin Lalle",
+        "Dakoro",
+        "Dan Goulbi",
+        "Korahane",
+        "Kornaka",
+        "Maiyara",
+        "Roumbou",
+        "Sabonmachi",
+        "Tagriss",
+    ],
+    "Damagaram Takaya" => [
+        "Alberkaram",
+        "Damagaram Takaya",
+        "Guidimouni",
+        "Kagna Wame",
+        "Mazamni",
+        "Moa",
+    ],
+    "Diffa" => [
+        "Chetimari",
+        "Diffa  Commune",
+        "Gueskerou",
+    ],
+    "Dioundiou" => [
+        "Dioundiou",
+        "Kara Kara",
+        "Zabori",
+    ],
+    "Dogondoutchi" => [
+        "Dan Kassari",
+        "Dogon Kiria",
+        "Dogondoutchi",
+        "Kieche",
+        "Matankari",
+        "Soucoucoutane",
+    ],
+    "Dosso" => [
+        "Dosso Commune",
+        "Farrey",
+        "Garankedeye",
+        "Golle",
+        "Gorouban Kassam",
+        "Kargui Bangou",
+        "Mokko",
+        "Sakadamna",
+        "Sambera",
+        "Tessa",
+        "Tombo Koarey",
+    ],
+    "Dungass" => [
+        "Dogo Dogo",
+        "Dungass",
+        "Gouchi",
+        "Mallaoua",
+    ],
+    "Falmey" => [
+        "Falmey",
+        "Guilladje",
+    ],
+    "Filingue" => [
+        "Damana",
+        "Filingue",
+        "Imanan",
+        "Kourfeye Centre",
+    ],
+    "Gaya" => [
+        "Bana",
+        "Bengou",
+        "Gaya",
+        "Tanda",
+        "Tounouga",
+        "Yelou",
+    ],
+    "Gazaoua" => [
+        "Gangara",
+        "Gazaoua",
+    ],
+    "Gotheye" => [
+        "Dargol",
+        "Gotheye",
+    ],
+    "Goudoumaria" => [
+        "Goudoumaria",
+    ],
+    "Goure" => [
+        "Alakos",
+        "Boune",
+        "Gamou",
+        "Goure",
+        "Guidiguir",
+        "Kelle",
+    ],
+    "Guidan-Roumdji" => [
+        "Chadakori",
+        "Guidan Roumdji",
+        "Guidan Sori",
+        "Sae Saboua",
+        "Tibiri (Maradi)",
+    ],
+    "Iferouane" => [
+        "Iferouane",
+        "Tmia",
+    ],
+    "Illela" => [
+        "Badaguichiri",
+        "Illela",
+        "Tajae",
+    ],
+    "Ingall" => [
+        "Ingall",
+    ],
+    "Kantche" => [
+        "Dan Barto",
+        "Daoutche",
+        "Doungou",
+        "Ichernaoua",
+        "Kantche",
+        "Kourni",
+        "Matameye",
+        "Tsouni",
+        "Yaouri",
+    ],
+    "Keita" => [
+        "Garhanga",
+        "Ibohamane",
+        "Keita",
+        "Tamaske",
+    ],
+    "Kollo" => [
+        "Bitinkodji",
+        "Dantchandou",
+        "Hamdallaye",
+        "Karma",
+        "Kirtachi",
+        "Kollo",
+        "Koure",
+        "Libore",
+        "N'Dounga",
+        "Namaro",
+        "Youri",
+    ],
+    "Loga" => [
+        "Falwel",
+        "Loga",
+        "Sokorbe",
+    ],
+    "Madaoua" => [
+        "Azarori",
+        "Bangui",
+        "Galma Koudawatche",
+        "Madaoua",
+        "Ourno",
+        "Sabon Guida",
+    ],
+    "Madarounfa" => [
+        "Dan Issa",
+        "Djirataoua",
+        "Gabi",
+        "Madarounfa",
+        "Safo",
+        "Serki Yama",
+    ],
+    "Magaria" => [
+        "Bande",
+        "Dan Tchio",
+        "Kouaya",
+        "Magaria",
+        "Sassoumbroum",
+        "Wacha",
+        "Yekoua",
+    ],
+    "Maine Soroa" => [
+        "Foulateri",
+        "Maine Soroa",
+        "N'Guelbeyli",
+    ],
+    "Malbaza" => [
+        "Dogueraoua",
+        "Malbaza",
+    ],
+    "Mayahi" => [
+        "Attantane",
+        "El Allassan Mairerey",
+        "Guidan Amoumoune",
+        "Issawane",
+        "Kanambakache",
+        "Mayahi",
+        "Serkin Haoussa",
+        "Tchake",
+    ],
+    "Mirriah" => [
+        "Dala Koleram",
+        "Dogo",
+        "Droum",
+        "Gaffati",
+        "Gouna",
+        "Hamdara",
+        "Mirriah",
+        "Zermou",
+    ],
+    "N'Gourti" => [
+        "N'Gourti",
+    ],
+    "N'Guigmi" => [
+        "Kabelewa",
+        "N'Guigmi",
+    ],
+    "Niamey Ville" => [
+        "Niamey I",
+        "Niamey Ii",
+        "Niamey Iii",
+        "Niamey Iv",
+        "Niamey V",
+    ],
+    "Ouallam" => [
+        "Dingazi Banda",
+        "Ouallam",
+        "Simiri",
+        "Tondikiwindi",
+    ],
+    "Say" => [
+        "Ouro Gueladio",
+        "Say",
+        "Tamou",
+    ],
+    "Tahoua Departement" => [
+        "Afala",
+        "Bambeye",
+        "Barmou",
+        "Kalfou",
+        "Takanamatt",
+        "Tebaram",
+    ],
+    "Takeita" => [
+        "Dakoussa",
+        "Garagoumsa",
+        "Tirmini",
+    ],
+    "Tanout" => [
+        "Falenco",
+        "Gangara",
+        "Ollelewa",
+        "Tanout",
+        "Tenhya",
+    ],
+    "Tassara" => [
+        "Tassara",
+    ],
+    "Tchintabaraden" => [
+        "Kao",
+        "Tchintabaraden",
+    ],
+    "Tchirozerine" => [
+        "Dabaga",
+        "Tabelot",
+        "Tchirozerine",
+    ],
+    "Tera" => [
+        "Diagourou",
+        "Goroual",
+        "Kokorou",
+        "Mehana",
+        "Tera",
+    ],
+    "Tesker" => [
+        "Tesker",
+    ],
+    "Tessaoua" => [
+        "Baoudeta",
+        "Hawandawaki",
+        "Koona",
+        "Korgom",
+        "Maijirgui",
+        "Ourafane",
+        "Tessaoua",
+    ],
+    "Tibiri" => [
+        "Doumega",
+        "Guecheme",
+        "Kore Mairoua",
+        "Tibiri (Dogondoutchi)",
+    ],
+    "Tillaberi" => [
+        "Anzourou",
+        "Bibiyergou",
+        "Dessa",
+        "Kourteye",
+        "Sakoira",
+        "Sinder",
+        "Tillaberi",
+    ],
+    "Tillia" => [
+        "Tillia",
+    ],
+    "Torodi" => [
+        "Makalondi",
+        "Torodi",
+    ],
+    "Ville  De Maradi" => [
+        "Maradi 1",
+        "Maradi 2",
+        "Maradi 3",
+    ],
+    "Ville De Tahoua" => [
+        "Tahoua Commune 1",
+        "Tahoua Commune 2",
+    ],
+    "Ville De Zinder" => [
+        "Zinder I",
+        "Zinder Ii",
+        "Zinder Iii",
+        "Zinder Iv",
+        "Zinder V",
+    ],
 ];
 
 // Niveaux d'enseignement
@@ -144,7 +551,7 @@ $categories_enseignants = [
 // Disciplines secondaire
 $disciplines_secondaire = [
     'FR', 'FR/HG', 'H-G', 'Anglais', 'Etude. Islam', 'L. Arabe', 'Philo',
-    'Maths', 'M/PC', 'M/SVT', 'PC/SVT', 'PC', 'SVT', 'EF', 'EPS', 'ASCN'
+    'Maths', 'M/PC', 'M/SVT', 'PC/SVT', 'PC', 'SVT', 'EF', 'EPS'
 ];
 
 // Personnel administratif secondaire

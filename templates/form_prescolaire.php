@@ -40,16 +40,18 @@
             </select>
         </div>
         
-        <div class="form-group">
+         <div class="form-group">
             <label for="departement">Département <span class="required">*</span></label>
-            <select id="departement" name="departement" required class="form-control" disabled>
+            <select id="departement" name="departement" required class="form-control"  onchange="loadCommunes(this.value)" disabled>
                 <option value="">-- Sélectionnez d'abord une région --</option>
             </select>
         </div>
-        
-        <div class="form-group">
+
+         <div class="form-group">
             <label for="commune">Commune <span class="required">*</span></label>
-            <input type="text" id="commune" name="commune" required class="form-control">
+            <select id="commune" name="commune" required class="form-control" disabled>
+                <option value="">-- Sélectionnez d'abord un departement --</option>
+            </select>
         </div>
         
         <div class="form-group">
@@ -531,10 +533,25 @@ document.addEventListener('DOMContentLoaded', function() {
 // Charger les départements
 const departementsData = <?php echo json_encode($departements_par_region); ?>;
 
+// Charger les communes
+const communesData = <?php echo json_encode($communes_par_departement); ?>;
+
 function loadDepartements(region) {
     const depSelect = document.getElementById('departement');
+    const comSelect = document.getElementById('commune');
+
+    if (!depSelect) return;
+
+    // Reset département
     depSelect.innerHTML = '<option value="">-- Sélectionnez --</option>';
-    
+    depSelect.disabled = true;
+
+    // Reset commune aussi quand on change de région
+    if (comSelect) {
+        comSelect.innerHTML = '<option value="">-- Sélectionnez d\'abord un département --</option>';
+        comSelect.disabled = true;
+    }
+
     if (region && departementsData[region]) {
         depSelect.disabled = false;
         departementsData[region].forEach(dep => {
@@ -543,8 +560,24 @@ function loadDepartements(region) {
             option.textContent = dep;
             depSelect.appendChild(option);
         });
-    } else {
-        depSelect.disabled = true;
+    }
+}
+
+function loadCommunes(departement) {
+    const comSelect = document.getElementById('commune');
+    if (!comSelect) return;
+
+    comSelect.innerHTML = '<option value="">-- Sélectionnez --</option>';
+    comSelect.disabled = true;
+
+    if (departement && communesData[departement]) {
+        comSelect.disabled = false;
+        communesData[departement].forEach(com => {
+            const option = document.createElement('option');
+            option.value = com;
+            option.textContent = com;
+            comSelect.appendChild(option);
+        });
     }
 }
 </script>
