@@ -1,7 +1,7 @@
 <?php
 /**
- * Page de gestion des utilisateurs
- * Enquête Rapide Rentrée Scolaire 2025-2026
+ * Page de gestion des années scolaires
+ * Enquête Rapide Rentrée Scolaire
  */
 
 require_once 'config.php';
@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Utilisateurs | Enquête Rapide</title>
+    <title>Gestion des Années Scolaires | Enquête Rapide</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -96,6 +96,35 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             max-width: 1400px;
             margin: 2rem auto;
             padding: 0 2rem;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            background: var(--light-green);
+            color: var(--primary-color);
+        }
+
+        .nav-tab.active {
+            background: var(--primary-color);
+            color: white;
         }
 
         /* Card */
@@ -177,29 +206,30 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             font-weight: 600;
         }
 
-        .badge-admin {
+        .badge-active {
+            background: #e8f5e9;
+            color: #4caf50;
+            border: 2px solid #4caf50;
+        }
+
+        .badge-inactive {
+            background: #f5f5f5;
+            color: #9e9e9e;
+        }
+
+        .badge-open {
             background: #e3f2fd;
             color: #1976d2;
         }
 
-        .badge-saisie {
-            background: var(--light-green);
-            color: var(--primary-color);
-        }
-
-        .badge-consultation {
-            background: #fff3e0;
-            color: var(--orange);
-        }
-
-        .badge-actif {
-            background: #e8f5e9;
-            color: #4caf50;
-        }
-
-        .badge-inactif {
+        .badge-closed {
             background: #ffebee;
             color: #f44336;
+        }
+
+        .badge-info {
+            background: #fff3e0;
+            color: var(--orange);
         }
 
         .btn-action {
@@ -213,13 +243,33 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             transition: all 0.3s ease;
         }
 
-        .btn-edit {
+        .btn-activate {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .btn-activate:hover {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-toggle {
             background: #e3f2fd;
             color: #1976d2;
         }
 
-        .btn-edit:hover {
+        .btn-toggle:hover {
             background: #1976d2;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #fff3e0;
+            color: var(--orange);
+        }
+
+        .btn-edit:hover {
+            background: var(--orange);
             color: white;
         }
 
@@ -303,7 +353,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         }
 
         .form-group input,
-        .form-group select {
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 0.9rem;
             border: 2px solid var(--border-color);
@@ -313,7 +364,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         }
 
         .form-group input:focus,
-        .form-group select:focus {
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(12, 159, 87, 0.1);
@@ -395,13 +447,49 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             padding: 3rem;
             color: var(--text-light);
         }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--light-green);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
         <div class="header-content">
-            <h1><i class="fas fa-users-cog"></i> Gestion des Utilisateurs</h1>
+            <h1><i class="fas fa-calendar-alt"></i> Gestion des Années Scolaires</h1>
             <a href="index.html" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Retour à l'accueil
             </a>
@@ -411,12 +499,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     <!-- Container -->
     <div class="container">
         <!-- Navigation Tabs -->
-        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-            <a href="gestion_users.php" style="padding: 0.8rem 1.5rem; background: var(--primary-color); color: white; border-radius: 10px; text-decoration: none; font-weight: 600; box-shadow: var(--shadow);">
-                <i class="fas fa-users-cog"></i> Utilisateurs
-            </a>
-            <a href="gestion_annees.php" style="padding: 0.8rem 1.5rem; background: white; color: var(--text-dark); border-radius: 10px; text-decoration: none; font-weight: 600; box-shadow: var(--shadow); transition: all 0.3s ease;">
+        <div class="nav-tabs">
+            <a href="gestion_annees.php" class="nav-tab active">
                 <i class="fas fa-calendar-alt"></i> Années Scolaires
+            </a>
+            <a href="gestion_users.php" class="nav-tab">
+                <i class="fas fa-users-cog"></i> Utilisateurs
             </a>
         </div>
 
@@ -427,102 +515,88 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         <!-- Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-users"></i> Liste des Utilisateurs</h2>
+                <h2><i class="fas fa-calendar"></i> Liste des Années Scolaires</h2>
                 <button class="btn-primary" onclick="showAddModal()">
-                    <i class="fas fa-plus"></i> Ajouter un utilisateur
+                    <i class="fas fa-plus"></i> Ajouter une année scolaire
                 </button>
             </div>
 
             <div class="table-container">
                 <div class="loading" id="loading">
                     <i class="fas fa-spinner fa-spin fa-2x"></i>
-                    <p>Chargement des utilisateurs...</p>
+                    <p>Chargement des années scolaires...</p>
                 </div>
-                <table id="usersTable" style="display: none;">
+                <table id="anneesTable" style="display: none;">
                     <thead>
                         <tr>
-                            <th>Nom d'utilisateur</th>
-                            <th>Nom complet</th>
-                            <th>Email</th>
-                            <th>Rôle</th>
-                            <th>Région</th>
+                            <th>Année Scolaire</th>
+                            <th>Date Début</th>
+                            <th>Date Fin</th>
                             <th>Statut</th>
-                            <th>Dernière connexion</th>
+                            <th>Collecte</th>
+                            <th>Établissements</th>
+                            <th>Description</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="usersTableBody">
+                    <tbody id="anneesTableBody">
                     </tbody>
                 </table>
                 <div class="no-data" id="noData" style="display: none;">
                     <i class="fas fa-inbox fa-3x"></i>
-                    <p>Aucun utilisateur trouvé</p>
+                    <p>Aucune année scolaire trouvée</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Add/Edit User Modal -->
-    <div class="modal" id="userModal">
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="anneeModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle"><i class="fas fa-user-plus"></i> Ajouter un utilisateur</h2>
+                <h2 id="modalTitle"><i class="fas fa-calendar-plus"></i> Ajouter une année scolaire</h2>
             </div>
-            <form id="userForm" onsubmit="handleSubmit(event)">
-                <input type="hidden" id="userId" name="id">
+            <form id="anneeForm" onsubmit="handleSubmit(event)">
+                <input type="hidden" id="anneeId" name="id">
                 
                 <div class="form-group">
-                    <label for="username">Nom d'utilisateur *</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Mot de passe <span id="passwordOptional"></span></label>
-                    <input type="password" id="password" name="password">
-                </div>
-
-                <div class="form-group">
-                    <label for="nom_complet">Nom complet</label>
-                    <input type="text" id="nom_complet" name="nom_complet">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
+                    <label for="libelle">Libellé (ex: 2025-2026) *</label>
+                    <input type="text" id="libelle" name="libelle" required placeholder="2025-2026">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="role">Rôle *</label>
-                        <select id="role" name="role" required>
-                            <option value="saisie">Saisie</option>
-                            <option value="consultation">Consultation</option>
-                            <option value="admin">Administrateur</option>
-                        </select>
+                        <label for="date_debut">Date de début *</label>
+                        <input type="date" id="date_debut" name="date_debut" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="actif">Statut *</label>
-                        <select id="actif" name="actif" required>
-                            <option value="1">Actif</option>
-                            <option value="0">Inactif</option>
-                        </select>
+                        <label for="date_fin">Date de fin *</label>
+                        <input type="date" id="date_fin" name="date_fin" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="region">Région</label>
-                    <select id="region" name="region">
-                        <option value="">Toutes les régions</option>
-                        <?php foreach ($regions_niger as $region): ?>
-                            <option value="<?php echo $region; ?>"><?php echo $region; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Description de l'année scolaire..."></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="departement">Département</label>
-                    <input type="text" id="departement" name="departement">
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="active" name="active" value="1">
+                            <label for="active">Année active</label>
+                        </div>
+                        <small style="color: var(--text-light);">Une seule année peut être active à la fois</small>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="collecte_ouverte" name="collecte_ouverte" value="1">
+                            <label for="collecte_ouverte">Collecte ouverte</label>
+                        </div>
+                        <small style="color: var(--text-light);">Autoriser la saisie de données</small>
+                    </div>
                 </div>
 
                 <div class="form-actions">
@@ -540,68 +614,77 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     <script>
         let isEditMode = false;
 
-        // Charger les utilisateurs
-        async function loadUsers() {
+        // Charger les années scolaires
+        async function loadAnnees() {
             try {
                 document.getElementById('loading').style.display = 'block';
-                document.getElementById('usersTable').style.display = 'none';
+                document.getElementById('anneesTable').style.display = 'none';
                 document.getElementById('noData').style.display = 'none';
 
-                const response = await fetch('api/users.php');
+                const response = await fetch('api/annees_scolaires.php');
                 const result = await response.json();
 
                 document.getElementById('loading').style.display = 'none';
 
                 if (result.success && result.data.length > 0) {
-                    displayUsers(result.data);
-                    document.getElementById('usersTable').style.display = 'table';
+                    displayAnnees(result.data);
+                    document.getElementById('anneesTable').style.display = 'table';
                 } else {
                     document.getElementById('noData').style.display = 'block';
                 }
             } catch (error) {
                 console.error('Erreur:', error);
                 document.getElementById('loading').style.display = 'none';
-                showError('Erreur lors du chargement des utilisateurs');
+                showError('Erreur lors du chargement des années scolaires');
             }
         }
 
-        // Afficher les utilisateurs dans le tableau
-        function displayUsers(users) {
-            const tbody = document.getElementById('usersTableBody');
+        // Afficher les années dans le tableau
+        function displayAnnees(annees) {
+            const tbody = document.getElementById('anneesTableBody');
             tbody.innerHTML = '';
 
-            users.forEach(user => {
+            annees.forEach(annee => {
                 const tr = document.createElement('tr');
                 
-                const roleClass = {
-                    'admin': 'badge-admin',
-                    'saisie': 'badge-saisie',
-                    'consultation': 'badge-consultation'
-                };
+                const dateDebut = new Date(annee.date_debut).toLocaleDateString('fr-FR');
+                const dateFin = new Date(annee.date_fin).toLocaleDateString('fr-FR');
+                
+                const statutBadge = annee.active == 1 
+                    ? '<span class="badge badge-active"><i class="fas fa-check-circle"></i> ACTIVE</span>'
+                    : '<span class="badge badge-inactive">Inactive</span>';
+                
+                const collecteBadge = annee.collecte_ouverte == 1
+                    ? '<span class="badge badge-open"><i class="fas fa-unlock"></i> Ouverte</span>'
+                    : '<span class="badge badge-closed"><i class="fas fa-lock"></i> Fermée</span>';
 
-                const derniereCo = user.derniere_connexion 
-                    ? new Date(user.derniere_connexion).toLocaleString('fr-FR')
-                    : 'Jamais';
+                const nbEtablissements = annee.nb_etablissements || 0;
 
                 tr.innerHTML = `
-                    <td><strong>${user.username}</strong></td>
-                    <td>${user.nom_complet || '-'}</td>
-                    <td>${user.email || '-'}</td>
-                    <td><span class="badge ${roleClass[user.role]}">${user.role.toUpperCase()}</span></td>
-                    <td>${user.region || '-'}</td>
+                    <td><strong>${annee.libelle}</strong></td>
+                    <td>${dateDebut}</td>
+                    <td>${dateFin}</td>
+                    <td>${statutBadge}</td>
+                    <td>${collecteBadge}</td>
+                    <td><span class="badge badge-info">${nbEtablissements} établissement(s)</span></td>
+                    <td>${annee.description || '-'}</td>
                     <td>
-                        <span class="badge ${user.actif == 1 ? 'badge-actif' : 'badge-inactif'}">
-                            ${user.actif == 1 ? 'Actif' : 'Inactif'}
-                        </span>
-                    </td>
-                    <td>${derniereCo}</td>
-                    <td>
-                        <button class="btn-action btn-edit" onclick="editUser(${user.id})">
+                        ${annee.active == 0 ? `
+                            <button class="btn-action btn-activate" onclick="activerAnnee(${annee.id}, '${annee.libelle}')" title="Activer cette année">
+                                <i class="fas fa-power-off"></i> Activer
+                            </button>
+                        ` : ''}
+                        <button class="btn-action btn-toggle" onclick="toggleCollecte(${annee.id}, ${annee.collecte_ouverte == 1 ? 0 : 1}, '${annee.libelle}')" title="${annee.collecte_ouverte == 1 ? 'Fermer' : 'Ouvrir'} la collecte">
+                            <i class="fas fa-${annee.collecte_ouverte == 1 ? 'lock' : 'unlock'}"></i> ${annee.collecte_ouverte == 1 ? 'Fermer' : 'Ouvrir'}
+                        </button>
+                        <button class="btn-action btn-edit" onclick="editAnnee(${annee.id})" title="Modifier">
                             <i class="fas fa-edit"></i> Modifier
                         </button>
-                        <button class="btn-action btn-delete" onclick="deleteUser(${user.id}, '${user.username}')">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
+                        ${annee.active == 0 && nbEtablissements == 0 ? `
+                            <button class="btn-action btn-delete" onclick="deleteAnnee(${annee.id}, '${annee.libelle}')" title="Supprimer">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        ` : ''}
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -611,55 +694,116 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         // Afficher le modal d'ajout
         function showAddModal() {
             isEditMode = false;
-            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus"></i> Ajouter un utilisateur';
-            document.getElementById('userForm').reset();
-            document.getElementById('userId').value = '';
-            document.getElementById('password').required = true;
-            document.getElementById('passwordOptional').textContent = '*';
-            document.getElementById('userModal').classList.add('show');
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-calendar-plus"></i> Ajouter une année scolaire';
+            document.getElementById('anneeForm').reset();
+            document.getElementById('anneeId').value = '';
+            document.getElementById('anneeModal').classList.add('show');
         }
 
-        // Éditer un utilisateur
-        async function editUser(id) {
+        // Éditer une année scolaire
+        async function editAnnee(id) {
             try {
-                const response = await fetch(`api/users.php?id=${id}`);
+                const response = await fetch(`api/annees_scolaires.php?id=${id}`);
                 const result = await response.json();
 
                 if (result.success) {
                     isEditMode = true;
-                    const user = result.data;
+                    const annee = result.data;
                     
-                    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-edit"></i> Modifier l\'utilisateur';
-                    document.getElementById('userId').value = user.id;
-                    document.getElementById('username').value = user.username;
-                    document.getElementById('password').value = '';
-                    document.getElementById('password').required = false;
-                    document.getElementById('passwordOptional').textContent = '(laisser vide pour ne pas changer)';
-                    document.getElementById('nom_complet').value = user.nom_complet || '';
-                    document.getElementById('email').value = user.email || '';
-                    document.getElementById('role').value = user.role;
-                    document.getElementById('actif').value = user.actif;
-                    document.getElementById('region').value = user.region || '';
-                    document.getElementById('departement').value = user.departement || '';
+                    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-calendar-edit"></i> Modifier l\'année scolaire';
+                    document.getElementById('anneeId').value = annee.id;
+                    document.getElementById('libelle').value = annee.libelle;
+                    document.getElementById('date_debut').value = annee.date_debut;
+                    document.getElementById('date_fin').value = annee.date_fin;
+                    document.getElementById('description').value = annee.description || '';
+                    document.getElementById('active').checked = annee.active == 1;
+                    document.getElementById('collecte_ouverte').checked = annee.collecte_ouverte == 1;
 
-                    document.getElementById('userModal').classList.add('show');
+                    document.getElementById('anneeModal').classList.add('show');
                 } else {
-                    showError('Erreur lors du chargement de l\'utilisateur');
+                    showError('Erreur lors du chargement de l\'année scolaire');
                 }
             } catch (error) {
                 console.error('Erreur:', error);
-                showError('Erreur lors du chargement de l\'utilisateur');
+                showError('Erreur lors du chargement de l\'année scolaire');
             }
         }
 
-        // Supprimer un utilisateur
-        async function deleteUser(id, username) {
-            if (!confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur "${username}" ?`)) {
+        // Activer une année scolaire
+        async function activerAnnee(id, libelle) {
+            if (!confirm(`Voulez-vous activer l'année scolaire "${libelle}" ?\n\nCela désactivera toutes les autres années.`)) {
                 return;
             }
 
             try {
-                const response = await fetch('api/users.php', {
+                const response = await fetch('api/annees_scolaires.php', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        id: id,
+                        action: 'activer'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccess(`Année scolaire "${libelle}" activée avec succès`);
+                    loadAnnees();
+                } else {
+                    showError(result.error || 'Erreur lors de l\'activation');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Erreur lors de l\'activation');
+            }
+        }
+
+        // Ouvrir/Fermer la collecte
+        async function toggleCollecte(id, nouvelEtat, libelle) {
+            const action = nouvelEtat ? 'ouvrir' : 'fermer';
+            
+            if (!confirm(`Voulez-vous ${action} la collecte pour l'année "${libelle}" ?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('api/annees_scolaires.php', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        id: id,
+                        action: 'toggle_collecte',
+                        collecte_ouverte: nouvelEtat
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccess(`Collecte ${nouvelEtat ? 'ouverte' : 'fermée'} pour l'année "${libelle}"`);
+                    loadAnnees();
+                } else {
+                    showError(result.error || 'Erreur lors de la modification');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Erreur lors de la modification');
+            }
+        }
+
+        // Supprimer une année scolaire
+        async function deleteAnnee(id, libelle) {
+            if (!confirm(`Êtes-vous sûr de vouloir supprimer l'année scolaire "${libelle}" ?\n\nCette action est irréversible.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('api/annees_scolaires.php', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -670,8 +814,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 const result = await response.json();
 
                 if (result.success) {
-                    showSuccess('Utilisateur supprimé avec succès');
-                    loadUsers();
+                    showSuccess('Année scolaire supprimée avec succès');
+                    loadAnnees();
                 } else {
                     showError(result.error || 'Erreur lors de la suppression');
                 }
@@ -686,17 +830,22 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             event.preventDefault();
 
             const formData = new FormData(event.target);
-            const data = {};
-            
-            formData.forEach((value, key) => {
-                if (value !== '') {
-                    data[key] = value;
-                }
-            });
+            const data = {
+                libelle: formData.get('libelle'),
+                date_debut: formData.get('date_debut'),
+                date_fin: formData.get('date_fin'),
+                description: formData.get('description'),
+                active: formData.get('active') ? 1 : 0,
+                collecte_ouverte: formData.get('collecte_ouverte') ? 1 : 0
+            };
+
+            if (isEditMode) {
+                data.id = document.getElementById('anneeId').value;
+            }
 
             try {
                 const method = isEditMode ? 'PUT' : 'POST';
-                const response = await fetch('api/users.php', {
+                const response = await fetch('api/annees_scolaires.php', {
                     method: method,
                     headers: {
                         'Content-Type': 'application/json'
@@ -707,9 +856,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 const result = await response.json();
 
                 if (result.success) {
-                    showSuccess(isEditMode ? 'Utilisateur modifié avec succès' : 'Utilisateur créé avec succès');
+                    showSuccess(isEditMode ? 'Année scolaire modifiée avec succès' : 'Année scolaire créée avec succès');
                     closeModal();
-                    loadUsers();
+                    loadAnnees();
                 } else {
                     showError(result.error || 'Erreur lors de l\'enregistrement');
                 }
@@ -721,8 +870,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
         // Fermer le modal
         function closeModal() {
-            document.getElementById('userModal').classList.remove('show');
-            document.getElementById('userForm').reset();
+            document.getElementById('anneeModal').classList.remove('show');
+            document.getElementById('anneeForm').reset();
         }
 
         // Afficher un message de succès
@@ -745,9 +894,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             }, 5000);
         }
 
-        // Charger les utilisateurs au chargement de la page
+        // Charger les années au chargement de la page
         window.addEventListener('DOMContentLoaded', () => {
-            loadUsers();
+            loadAnnees();
         });
     </script>
 </body>
