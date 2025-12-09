@@ -1,0 +1,211 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║        SYSTÈME D'ENQUÊTE RAPIDE - RENTRÉE SCOLAIRE 2025-2026            ║
+║                    République du Niger                                    ║
+║         Ministère de l'Education Nationale                               ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+📋 CONTENU DU PACKAGE
+═══════════════════════════════════════════════════════════════════════════
+
+✓ index.html               → Page d'accueil avec sélection de cycle
+✓ formulaire.php           → Formulaire multi-étapes dynamique
+✓ submit_form.php          → Traitement des soumissions
+✓ dashboard.php            → Tableau de bord avec graphiques
+✓ success.php              → Page de confirmation
+✓ config.php               → Configuration de l'application
+✓ database.sql             → Schéma de base de données MySQL
+✓ README.md                → Documentation complète
+✓ templates/               → Templates des 3 cycles
+✓ css/                     → Feuilles de style
+✓ js/                      → Scripts JavaScript
+
+═══════════════════════════════════════════════════════════════════════════
+⚡ INSTALLATION RAPIDE (5 MINUTES)
+═══════════════════════════════════════════════════════════════════════════
+
+ÉTAPE 1 : Décompresser
+────────────────────────────────────────────────────────────────────────
+unzip enquete_education_niger.zip
+cd enquete_education_niger
+
+ÉTAPE 2 : Créer la base de données
+────────────────────────────────────────────────────────────────────────
+mysql -u root -p < database.sql
+
+Ou via phpMyAdmin :
+  1. Créer la base : enquete_rentree_niger
+  2. Importer : database.sql
+
+ÉTAPE 3 : Configurer la connexion
+────────────────────────────────────────────────────────────────────────
+Éditer config.php :
+
+  define('DB_HOST', 'localhost');
+  define('DB_NAME', 'enquete_rentree_niger');
+  define('DB_USER', 'root');
+  define('DB_PASS', 'votre_mot_de_passe');
+
+ÉTAPE 4 : Déployer
+────────────────────────────────────────────────────────────────────────
+Copier tous les fichiers dans votre répertoire web :
+
+  cp -r * /var/www/html/enquete/
+
+ÉTAPE 5 : Tester
+────────────────────────────────────────────────────────────────────────
+Ouvrir dans le navigateur :
+  http://localhost/enquete/
+  ou
+  http://votre-domaine.ne/enquete/
+
+═══════════════════════════════════════════════════════════════════════════
+🎯 FONCTIONNALITÉS CLÉS
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Formulaires intelligents pour 3 cycles
+   • Préscolaire (Jardins d'Enfants)
+   • Primaire (CI à CM2)
+   • Secondaire (6ème à Terminale)
+
+✅ Navigation multi-étapes avec validation
+   • Progression visuelle
+   • Validation en temps réel
+   • Sauvegarde automatique
+
+✅ Calculs automatiques
+   • Totaux des effectifs
+   • Sommes du personnel
+   • Statistiques en temps réel
+
+✅ Tableau de bord professionnel
+   • Graphiques interactifs (Chart.js)
+   • Statistiques par région/cycle
+   • Filtres dynamiques
+   • Export des données
+
+✅ Base de données optimisée
+   • 12 tables principales
+   • 4 vues statistiques
+   • Relations intègres
+   • Procédures stockées
+
+✅ Design responsive
+   • Mobile friendly
+   • Tablette optimisé
+   • Desktop professionnel
+
+═══════════════════════════════════════════════════════════════════════════
+🗄️ STRUCTURE DE LA BASE DE DONNÉES
+═══════════════════════════════════════════════════════════════════════════
+
+TABLES PRINCIPALES :
+──────────────────────────────────────────────────────────────────────────
+  • etablissements            → Infos générales
+  • effectifs_prescolaire     → Effectifs JE
+  • effectifs_primaire        → Effectifs primaire
+  • effectifs_secondaire      → Effectifs secondaire
+  • personnel_enseignant      → Enseignants
+  • personnel_administratif   → Personnel admin
+  • salles_classes            → Salles et infrastructures
+  • mobiliers                 → Équipements
+  • infrastructures           → Autres infrastructures
+  • besoins                   → Besoins identifiés
+  • utilisateurs              → Comptes utilisateurs
+  • logs_activites            → Journaux d'audit
+
+VUES STATISTIQUES :
+──────────────────────────────────────────────────────────────────────────
+  • v_synthese_par_region
+  • v_effectifs_primaire_global
+  • v_effectifs_secondaire_global
+  • v_personnel_enseignant_global
+
+═══════════════════════════════════════════════════════════════════════════
+🎨 PERSONNALISATION
+═══════════════════════════════════════════════════════════════════════════
+
+COULEURS :
+  Modifier css/formulaire.css → :root variables
+
+RÉGIONS/DÉPARTEMENTS :
+  Modifier config.php → $regions_niger, $departements_par_region
+
+LOGO :
+  Remplacer l'icône Font Awesome par votre logo
+
+═══════════════════════════════════════════════════════════════════════════
+🔒 SÉCURITÉ
+═══════════════════════════════════════════════════════════════════════════
+
+✓ Requêtes SQL préparées (PDO)
+✓ Échappement des entrées
+✓ Validation côté serveur
+✓ Transactions SQL
+✓ Logs d'activité
+
+RECOMMANDATIONS PRODUCTION :
+  • Activer HTTPS
+  • Créer utilisateur MySQL dédié
+  • Implémenter authentification
+  • Sauvegardes automatiques
+  • Limiter accès dashboard
+
+═══════════════════════════════════════════════════════════════════════════
+📊 UTILISATION
+═══════════════════════════════════════════════════════════════════════════
+
+1. REMPLIR UN FORMULAIRE
+   index.html → Choisir cycle → Remplir formulaire → Soumettre
+
+2. CONSULTER LES DONNÉES
+   dashboard.php → Voir statistiques → Filtrer par région/cycle
+
+3. EXPORTER LES DONNÉES
+   phpMyAdmin → Export → CSV/SQL
+
+═══════════════════════════════════════════════════════════════════════════
+🐛 DÉPANNAGE
+═══════════════════════════════════════════════════════════════════════════
+
+ERREUR : Connexion base de données
+  → Vérifier config.php
+  → Vérifier MySQL démarré : systemctl status mysql
+
+ERREUR : Formulaire ne se soumet pas
+  → Vérifier console JavaScript (F12)
+  → Vérifier champs obligatoires remplis
+
+ERREUR : Graphiques ne s'affichent pas
+  → Vérifier connexion internet (Chart.js CDN)
+  → Vérifier données dans la base
+
+═══════════════════════════════════════════════════════════════════════════
+📞 SUPPORT
+═══════════════════════════════════════════════════════════════════════════
+
+Direction des Statistiques (DS/PTICE)
+Ministère de l'Education Nationale du Niger
+
+📧 Email  : support@education.ne
+☎️  Tél    : +227 XX XX XX XX
+🌐 Web    : www.education.ne
+
+═══════════════════════════════════════════════════════════════════════════
+📝 INFORMATIONS LÉGALES
+═══════════════════════════════════════════════════════════════════════════
+
+© 2025 Ministère de l'Education Nationale du Niger
+Tous droits réservés.
+
+Version : 1.0.0
+Date    : Janvier 2025
+
+Cette application est destinée à un usage officiel uniquement pour les
+besoins du Ministère de l'Education Nationale de la République du Niger.
+
+═══════════════════════════════════════════════════════════════════════════
+
+Bonne utilisation ! 🎓📚
+
