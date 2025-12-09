@@ -1,6 +1,12 @@
 <?php
 require_once 'config.php';
 
+// Vérifier que l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.html');
+    exit;
+}
+
 $db = Database::getInstance()->getConnection();
 
 // Récupérer les statistiques globales
@@ -70,7 +76,7 @@ $enquetes_recentes = $db->query($sql_recentes)->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord - Enquête Rapide 2025-2026</title>
+    <title>Tableau de Bord - Enquête Rapide <?php echo $_SESSION['annee_scolaire_active']['libelle'] ?? '2025-2026'; ?></title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -428,7 +434,7 @@ $enquetes_recentes = $db->query($sql_recentes)->fetchAll();
                 </div>
                 <div class="header-titles">
                     <h1>Tableau de Bord - Enquête Rapide</h1>
-                    <p>Année Scolaire 2025-2026</p>
+                    <p class="annee-scolaire-display with-badge">Année Scolaire <?php echo $_SESSION['annee_scolaire_active']['libelle'] ?? '2025-2026'; ?></p>
                 </div>
             </div>
             <div class="header-actions">
@@ -726,5 +732,8 @@ $enquetes_recentes = $db->query($sql_recentes)->fetchAll();
             window.location.href = 'view_details.php?id=' + id;
         }
     </script>
+    
+    <!-- Script de gestion de l'année scolaire active -->
+    <script src="js/annee_scolaire.js"></script>
 </body>
 </html>

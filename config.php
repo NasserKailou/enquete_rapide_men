@@ -98,6 +98,41 @@ function logActivite($utilisateur_id, $action, $table_concernee = null, $id_enre
     ]);
 }
 
+// Fonction pour récupérer l'année scolaire active
+function getAnneeScolaireActive() {
+    $db = Database::getInstance()->getConnection();
+    
+    try {
+        $stmt = $db->query("SELECT * FROM annees_scolaires WHERE active = 1 LIMIT 1");
+        $annee = $stmt->fetch();
+        
+        if ($annee) {
+            return $annee;
+        }
+        
+        // Si aucune année n'est active, retourner l'année par défaut
+        return [
+            'id' => null,
+            'libelle' => ANNEE_SCOLAIRE,
+            'active' => 0,
+            'collecte_ouverte' => 1
+        ];
+    } catch (Exception $e) {
+        // En cas d'erreur (table non créée), retourner l'année par défaut
+        return [
+            'id' => null,
+            'libelle' => ANNEE_SCOLAIRE,
+            'active' => 0,
+            'collecte_ouverte' => 1
+        ];
+    }
+}
+
+// Stocker l'année scolaire active en session
+if (!isset($_SESSION['annee_scolaire_active'])) {
+    $_SESSION['annee_scolaire_active'] = getAnneeScolaireActive();
+}
+
 // Listes des régions du Niger
 
 $regions_niger = [
